@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "878368781810",
+    "firebase_url": "https://my-location-trail.firebaseio.com",
+    "project_id": "my-location-trail",
+    "storage_bucket": "my-location-trail.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:878368781810:android:cdc5d9b83738d29dbf276b",
+        "android_client_info": {
+          "package_name": "com.example.mylocationtrail"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "878368781810-0b6pcvn293b69p4hi2qpjuo1h133544k.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.mylocationtrail",
+            "certificate_hash": "d23028ef4dde5b42673891d4bbd164d07bf68730"
+          }
+        },
+        {
+          "client_id": "878368781810-8urs8i8btfqj2dcv17vvui1r8brnmt4u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD3yKP6AlzTv0WHMBzUTYQxeb_rnMacA-4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "878368781810-8urs8i8btfqj2dcv17vvui1r8brnmt4u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

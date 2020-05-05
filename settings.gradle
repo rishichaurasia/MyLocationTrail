@@ -1,0 +1,2 @@
+rootProject.name='My Location Trail'
+include ':app'
