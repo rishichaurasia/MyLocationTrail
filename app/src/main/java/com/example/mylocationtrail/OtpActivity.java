@@ -43,7 +43,7 @@ public class OtpActivity extends AppCompatActivity {
         mVerifyBtn = findViewById(R.id.verifyOtp);
         mProgBar = findViewById(R.id.otp_progressBar);
 
-        mAuthVerificationID = getIntent().getStringExtra("AuthCredentials");
+        mAuthVerificationID = getIntent().getStringExtra("VerificationID");
 
         mVerifyBtn.setOnClickListener(new View.OnClickListener() {
             @Override

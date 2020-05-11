@@ -31,8 +31,8 @@ import java.util.Date;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
-    private static final long MIN_TIME = 5000 ;
-    private static final float MIN_DISTANCE = 1;
+    private static final long MIN_TIME = 10000 ;
+    private static final float MIN_DISTANCE = 10;
     private GoogleMap mMap;
 
     private ArrayList<LatLng> locationTrails;
@@ -41,6 +41,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private LocationListener locationListener;
     private LocationManager locationManager;
 
+    PolylineOptions polylineOptions;
     Polyline polyline;
 
     @Override
@@ -70,35 +71,25 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        final PolylineOptions polylineOptions = new PolylineOptions()
+        //requesting location updates for location listener
+        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+
+        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+            Toast.makeText(this, "GPS is Enabled in your device", Toast.LENGTH_SHORT).show();
+        }else{
+            // GPS not enabled
+            Toast.makeText(this, "GPS is not enabled in your device", Toast.LENGTH_SHORT).show();
+            showGPSDisabledAlertToUser();
+        }
+
+        polylineOptions = new PolylineOptions()
                 .addAll(locationTrails).clickable(true);
         polyline = googleMap.addPolyline(polylineOptions);
 
         locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
-                LatLng updated = new LatLng(location.getLatitude(), location.getLongitude());
-                locationTrails.add(updated);
-
-                //adding marker
-                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                String timeStamp  = dateFormat.format(new Date());
-                timeStamps.add(timeStamp);
-                mMap.clear();
-                mMap.addMarker(new MarkerOptions().position(locationTrails.get(0)).title("Start: " + timeStamps.get(0)).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
-                mMap.addMarker(new MarkerOptions().position(locationTrails.get(locationTrails.size()-1)).title("End: " + timeStamps.get(timeStamps.size()-1)).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
-                mMap.addMarker(new MarkerOptions().position(updated).title("Timestamp: " + timeStamp));
-                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(updated,18.0f));
-
-                //adding new polyline
-                polylineOptions.add(updated);
-                polyline = mMap.addPolyline(polylineOptions);
-                polyline.setColor(Color.rgb(74,137,243));
-
-                //save externally updated location
-                String toCSV = location.getLatitude() + "," + location.getLongitude() + "," + location.getTime() + "\n";
-                exportToCSV(toCSV);
-
+                drawOnMap(location);
             }
 
             @Override
@@ -117,46 +108,40 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         };
 
-        //requesting location updates for location listener
-        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-
-        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
-            Toast.makeText(this, "GPS is Enabled in your device", Toast.LENGTH_SHORT).show();
-        }else{
-            // GPS not enabled
-            Toast.makeText(this, "GPS is not enabled in your device", Toast.LENGTH_SHORT).show();
-            showGPSDisabledAlertToUser();
-        }
-
         //setting location update time and distance
         try {
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, MIN_TIME, MIN_DISTANCE, locationListener);
 
-//            // first marker
-//            Location loc = locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
-//            LatLng updated = new LatLng(loc.getLatitude(), loc.getLongitude());
-//
-//            // adding new updated location
-//            locationTrails.add(updated);
-//
-//            //adding marker
-//            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//            String timeStamp  = dateFormat.format(new Date());
-//            timeStamps.add(timeStamp);
-//            mMap.addMarker(new MarkerOptions().position(locationTrails.get(0)).title("Start: " + timeStamps.get(0)).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
-//            mMap.addMarker(new MarkerOptions().position(updated).title("Timestamp: " + timeStamp));
-//            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(updated,18.0f));
-//
-//            polylineOptions.add(updated);
-//
-//            //save externally updated location
-//            String toCSV = loc.getLatitude() + "," + loc.getLongitude() + "," + loc.getTime() + "\n";
-//            exportToCSV(toCSV);
+            Location startLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            drawOnMap(startLocation);
 
         } catch (SecurityException | NullPointerException e) {
             e.printStackTrace();
         }
 
+    }
+
+    private void drawOnMap(Location location){
+        LatLng updated = new LatLng(location.getLatitude(), location.getLongitude());
+        locationTrails.add(updated);
+
+        //adding marker
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String timeStamp  = dateFormat.format(new Date());
+        timeStamps.add(timeStamp);
+        mMap.clear();
+        mMap.addMarker(new MarkerOptions().position(locationTrails.get(0)).title("Start: " + timeStamps.get(0)).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+        mMap.addMarker(new MarkerOptions().position(locationTrails.get(locationTrails.size()-1)).title("End: " + timeStamps.get(timeStamps.size()-1)).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(updated,18.0f));
+
+        //adding new polyline
+        polylineOptions.add(updated);
+        polyline = mMap.addPolyline(polylineOptions);
+        polyline.setColor(Color.rgb(74,137,243));
+
+        //save externally updated location
+        String toCSV = location.getLatitude() + "," + location.getLongitude() + "," + location.getTime() + "\n";
+        exportToCSV(toCSV);
     }
 
     private void showGPSDisabledAlertToUser(){

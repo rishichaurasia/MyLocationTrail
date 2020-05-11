@@ -83,7 +83,7 @@ public class LoginActivity extends AppCompatActivity {
                 super.onCodeSent(s, forceResendingToken);
 
                 Intent otpIntent = new Intent(LoginActivity.this, OtpActivity.class);
-                otpIntent.putExtra("AuthCredentials", s);
+                otpIntent.putExtra("VerificationID", s);
                 startActivity(otpIntent);
             }
         };
