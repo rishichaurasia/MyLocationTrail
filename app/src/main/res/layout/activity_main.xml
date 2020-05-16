@@ -14,6 +14,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:scaleType="fitXY"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/bg" />
@@ -35,7 +37,7 @@
         android:id="@+id/button"
         style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="250dp"
-        android:layout_height="40dp"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="24dp"
         android:background="@android:color/background_light"
         android:ellipsize="none"
@@ -43,8 +45,26 @@
         android:text="Start Tracking"
         android:textColor="#000000"
         android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/nearbyDevices"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/nearbyDevices"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:background="@android:color/background_light"
+        android:ellipsize="none"
+        android:onClick="onClickActivity"
+        android:text="SEARCH NEARBY DEVICES"
+        android:textColor="#000000"
+        android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/logout"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.503"
         app:layout_constraintStart_toStartOf="parent" />
 
     <ImageView
@@ -60,7 +80,7 @@
     <Button
         android:id="@+id/logout"
         android:layout_width="250dp"
-        android:layout_height="40dp"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="80dp"
         android:background="#FFFFFF"
         android:text="LOGOUT"

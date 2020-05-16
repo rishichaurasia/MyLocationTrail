@@ -26,9 +26,9 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseUser mCurrentUser;
     private static final int LOCATION_PERMISSION_REQUESTCODE = 999;
     private static final int STORAGE_PERMISSION_REQUESTCODE = 0;
-    EditText phoneNumber;
     Button startTracking;
     Button mLogoutBtn;
+    Button mNearbyDevices;
     TextView welcome;
     
 
@@ -46,7 +46,16 @@ public class MainActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         mCurrentUser = mAuth.getCurrentUser();
         mLogoutBtn = findViewById(R.id.logout);
+        mNearbyDevices = findViewById(R.id.nearbyDevices);
         welcome = findViewById(R.id.welcome);
+
+        mNearbyDevices.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent bluetoothIntent = new Intent(MainActivity.this, BluetoothActivity.class);
+                startActivity(bluetoothIntent);
+            }
+        });
 
         mLogoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,6 +66,8 @@ public class MainActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+
 
         // Getting required permissions
         getPermissions();
